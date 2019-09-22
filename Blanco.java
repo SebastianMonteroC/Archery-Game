@@ -1,25 +1,24 @@
 public class Blanco{
-    public int puntaje;
-    public double radioDelBlancoMayor;
-    public double radioDelBlancoIntermedio;
-    public double radioDelBlancoMenor;
+	private int puntuacion;
 
+	public Blanco(){
+		puntuacion = 0; 
+	}
 
+	public int asignarPuntuacion(Double coordenadaX, Double coordenadaY){
+		if (coordenadaX > 0.4 && coordenadaY > 0.4) {
+			puntuacion = 15;
+		}
+		else{
+			if (coordenadaX > 0.05 && coordenadaY > 0.05) {
+				puntuacion = 20;
+			}
+			else{
+				puntuacion = 100;
+			}
+		}
+		
+		return puntuacion;
+	}
     
-    public Blanco(){
-        setPuntaje(0);
-        radioDelBlancoMayor = 1;
-        radioDelBlancoIntermedio = 0.5;
-        radioDelBlancoMenor = 0.1;
-    }
-    
-    public void setPuntaje(int puntaje){
-        this.puntaje = puntaje;
-    }
-
-    
-    public int sacarPuntaje(int coordenadaX, int coordenadaY){
-        
-        return puntaje;
-    }
 }
