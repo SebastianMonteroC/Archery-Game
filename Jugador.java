@@ -3,12 +3,18 @@ public class Jugador {
     public String experiencia;
     public double rangoDeErrorMinimo;
     public double rangoDeErrorMaximo;
+    public boolean esHumano;
     java.util.Random random = new java.util.Random();
 
     
-    public Jugador(){
+    public Jugador(boolean esHumano){
         setExperiencia(randomNivel());
         generarRango();
+        setEsHumano(esHumano);
+    }
+    
+    public void setEsHumano(boolean esHumano){
+        this.esHumano = esHumano;
     }
     
     public void setExperiencia(String experiencia){
@@ -41,6 +47,7 @@ public class Jugador {
         String aleatorioObtenido = nivelesDisponibles[nivelAleatorio];
         return aleatorioObtenido;
     }
+    
     public void generarRango(){
         double rangoFinal = 0;
         switch (experiencia) {
@@ -58,6 +65,7 @@ public class Jugador {
             break;
         }
     }
+    
     public double falloAleatorio(){
         double valorAleatorio = new Random().nextDouble();
         double valorAleatorioEnRango = rangoDeErrorMinimo + (valorAleatorio * (rangoDeErrorMaximo - rangoDeErrorMinimo));

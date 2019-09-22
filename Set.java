@@ -4,9 +4,9 @@ public class Set{
    public int puntajeJugador1;
    public int puntajeJugador2;
    
-   public Set(){
+   public Set(int cantidadDeFlechas){
        viento = new Viento();
-       setFlechas(3);
+       setFlechas(cantidadDeFlechas);
    }
    
    public void setFlechas(int flechas){
