@@ -42,8 +42,12 @@ public class Partida {
     
     public void prueba(){
         set = new Set(1);
-        System.out.println(set.aplicarVientoDelSet(jugador1.tiro(1),true));
-        System.out.println(set.aplicarVientoDelSet(jugador1.tiro(1),false));
+        double coordenadaXJugador1 = set.aplicarVientoDelSet(jugador1.tiro(1),true);
+        double coordenadaYJugador1 = set.aplicarVientoDelSet(jugador1.tiro(1),false);
+        System.out.println(coordenadaXJugador1);
+        System.out.println(coordenadaYJugador1);
+
+        System.out.println(blanco.sacarPuntaje(coordenadaXJugador1, coordenadaYJugador1));
         
     }
     
