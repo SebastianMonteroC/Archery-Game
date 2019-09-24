@@ -21,6 +21,10 @@ public class Jugador {
         this.esHumano = esHumano;
     }
     
+    public boolean getEsHumano(){
+        return esHumano;
+    }
+    
     public void setExperiencia(String experiencia){
         this.experiencia = experiencia;
     }
@@ -31,14 +35,6 @@ public class Jugador {
     
     public void setRangoDeErrorMaximo(double rangoDeErrorMaximo){
         this.rangoDeErrorMaximo = rangoDeErrorMaximo;
-    }
-
-    public void setPuntaje(int puntaje){
-        this.puntaje = puntaje;
-    }
-
-    public void setSetsGanados(int setsGanados){
-        this.setsGanados = setsGanados;
     }
     
     public String getExperiencia(){
@@ -52,7 +48,7 @@ public class Jugador {
     public double getRangoDeErrorMaximo(){
         return rangoDeErrorMaximo;
     }
-
+    
     public int getPuntaje(){
         return puntaje;
     }
@@ -64,8 +60,6 @@ public class Jugador {
     public void agregarPuntaje(int puntaje){
         this.puntaje += puntaje;
     }
-
-    
     public String randomNivel(){
         String[] nivelesDisponibles = {"Novato","Intermedio","Profesional"};
         int nivelAleatorio = random.nextInt(nivelesDisponibles.length);
@@ -101,4 +95,5 @@ public class Jugador {
         double coordenadaConError = coordenada + falloAleatorio();
         return coordenadaConError;
     }
+    
 }

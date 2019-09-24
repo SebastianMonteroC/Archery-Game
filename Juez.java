@@ -5,15 +5,15 @@ public class Juez{
     private Jugador jugador1;
     private Jugador jugador2;
     private Set set;
-    private ArrayList<Set> sets;
 
     private int cantidadDeSets;
-    
-
-    private int puntajesRegistradosJugador1;
-    private int puntajesRegistradosJugador2;
-
-    private int puntajeMasAlto;
+    private int puntajePorSetJ1 = 0;
+    private int puntajePorSetJ2 = 0;
+    private int puntajeDePartidaJ1 = 0;
+    private int puntajeDePartidaJ2 = 0;
+    private int setsGanadosJ1 = 0;
+    private int setsGanadosJ2 = 0;
+    private static int puntajeMasAlto;
     
 
     public Juez(Blanco blanco, Jugador jugador1, Jugador jugador2, Set set){
@@ -21,44 +21,100 @@ public class Juez{
         this.jugador1 = jugador1;
         this.jugador2 = jugador2;
         this.set = set;
-        sets = new ArrayList();
-        puntajesRegistradosJugador1 = 0;
-        puntajesRegistradosJugador2 = 0;
+
+        
     }
 
-    public void reiniciar(){
-        puntajesRegistradosJugador1 = 0;
-        puntajesRegistradosJugador2 = 0;
+    public void reiniciarSet(){
+        puntajePorSetJ1 = 0;
+        puntajePorSetJ2 = 0;
+    }
+    
+    public static int reiniciarPuntajeMasAlto(){
         puntajeMasAlto = 0;
-    }
-
-    public void agregarSet(Set set){
-        sets.add(set);
+        return puntajeMasAlto;
     }
 
     public void registrarPuntajeJugador1(int puntaje){
-        puntajesRegistradosJugador1 += puntaje;
+        puntajePorSetJ1 += puntaje;
+        puntajeDePartidaJ1 += puntaje;
         jugador1.agregarPuntaje(puntaje);
     }
 
     public void registrarPuntajeJugador2(int puntaje){
-        puntajesRegistradosJugador2 += puntaje;
+        puntajePorSetJ2 += puntaje;
+        puntajeDePartidaJ2 += puntaje;
         jugador2.agregarPuntaje(puntaje);
     }
+    
+    public int getPuntajeMasAlto(){
+        return puntajeMasAlto;
+    }
 
-    public void setPuntajeMasAlto(){
+    public void setPuntajeMasAlto(int puntaje,String nombre){
+        if(puntaje > puntajeMasAlto){
+            puntajeMasAlto = puntaje;
+        }
+        
+        Menu.setPuntaje(puntajeMasAlto,nombre);
         
     }
-
-    public String getPuntajeMasAlto(int numeroDeSet){
-        Set set = sets.get(numeroDeSet-1);
-        int puntanjeMasAltoXSet = set.getPuntajeMasAlto();
-        return "En el set: " + numeroDeSet + " el puntaje más alto fue: " + puntanjeMasAltoXSet + " del " + set.getGanador();
-
+    
+    public String definirGanadorDeSet(){
+        String ganador = "";
+        if(puntajePorSetJ1 > puntajePorSetJ2){
+            ganador = "Gana el jugador 1 con " + puntajePorSetJ1 + " puntos.\nEl jugador 2 tuvo " + puntajePorSetJ2 + " puntos.";
+            setsGanadosJ1 += 1;
+        }
+        else{
+            if(puntajePorSetJ2 > puntajePorSetJ1){
+                ganador = "Gana el jugador 2 con " + puntajePorSetJ2 + " puntos.\nEl jugador 1 tuvo " + puntajePorSetJ1 + " puntos.";
+                setsGanadosJ2 += 1;
+            }
+            else{
+                if(puntajePorSetJ2 == puntajePorSetJ1){
+                    ganador = "Empate. Ambos jugadores tuvieron: " + puntajePorSetJ1 + " puntos.";
+                }
+            }
+        }
+        return ganador;
     }
-    //Pero, Que pasa si Dios quiere ver quien gano x set con y puntos?
+    
+    public String definirGanadorDePartida(){
+        String ganadorPartida = "";
+        if(setsGanadosJ1 > setsGanadosJ2){
+            ganadorPartida = "FELICIDADES!\nGana la partida el jugador 1 con " + puntajeDePartidaJ1 + " puntos.\nEl jugador 2 tuvo " + puntajeDePartidaJ2 + " puntos.";
+        }
+        else{
+            if(setsGanadosJ2 > setsGanadosJ1){
+                ganadorPartida = "F to pay respects...\nGana la partida el jugador 2 con " + puntajeDePartidaJ2 + " puntos.\nEl jugador 1 tuvo " + puntajeDePartidaJ1 + " puntos.";
 
-
-
+            }
+            else{
+                if(setsGanadosJ2 == setsGanadosJ1){
+                    ganadorPartida = "Empate";                    
+                }
+            }
+        }
+        return ganadorPartida;
+    }
+    
+    public boolean compararTiros(int puntajeJ1, int puntajeJ2){
+        boolean hayGanador = false;
+        if(puntajeJ1 > puntajeJ2){
+            hayGanador = true;
+        }
+        else{
+            if(puntajeJ2 > puntajeJ1){
+                hayGanador = true;
+            }
+        }
+        return hayGanador;
+    }
+    
+    public String devolverGanadorDesempate(String jugador){
+        return "Ha ganado el jugador " + jugador;
+    }
+    
 
 }

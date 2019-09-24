@@ -3,7 +3,7 @@ public class Set{
    public int flechas;
    public int puntajeJugador1;
    public int puntajeJugador2;
-   private int puntajeMasAlto;
+   public int puntajeMasAlto;
    
    public Set(int cantidadDeFlechas){
        viento = new Viento();
@@ -32,7 +32,7 @@ public class Set{
    public int getPuntajeJugador2(){
        return puntajeJugador2;
    }
-
+   
    public String getGanador(){
        String ganador = "";
        if(puntajeJugador1 > puntajeJugador2){
@@ -55,6 +55,7 @@ public class Set{
    public int getPuntajeMasAlto(){
     return this.puntajeMasAlto;
    }
+   
    public double aplicarVientoDelSet(double coordenada, boolean abscisa){
        return viento.aplicarViento(coordenada, abscisa);
    }

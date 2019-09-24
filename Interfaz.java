@@ -82,6 +82,20 @@ public class Interfaz extends JFrame{
       return coordenadas;
     }
     
+    public String ingresarNombre(){
+        JTextField nombreField = new JTextField(6);
+        String nombreDeUsuario = "";
+        JPanel myPanel = new JPanel();
+        myPanel.add(new JLabel("Ingrese su nombre: "));
+        myPanel.add(nombreField);
+        myPanel.add(Box.createHorizontalStrut(15));
+        int result = JOptionPane.showConfirmDialog(null, myPanel, "HIGH SCORE", JOptionPane.OK_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            mensaje("HIGH SCORE GUARDADO CON EXITO!");
+            nombreDeUsuario = nombreField.getText();
+        }
+        return nombreDeUsuario;
+    }
     //crea un joptionpane con el mensaje ingresado
     public void mensaje(String mensaje){
         JOptionPane.showMessageDialog(null,mensaje,"Arqueria",1);
@@ -107,7 +121,7 @@ public class Interfaz extends JFrame{
         this.add(verPuntaje);
         verPuntaje.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent evt){
-                
+                mensaje("Puntaje mas alto es: " + Menu.puntajeMasAlto + " hecho por " + Menu.nombreDeHighScore);
             }
         }); 
     }

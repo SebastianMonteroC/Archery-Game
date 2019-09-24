@@ -3,6 +3,8 @@ public class Menu {
     private static Partida partida;
     public static int setsIngresados;
     public static int flechasIngresadas;
+    public static int puntajeMasAlto;
+    public static String nombreDeHighScore;
     
     
     public Menu(){
@@ -18,11 +20,16 @@ public class Menu {
     
     public static void cambiarSets(){
         setsIngresados = interfaz.cambiarDato("sets");
+        puntajeMasAlto = Juez.reiniciarPuntajeMasAlto();
     }
     
     public static void cambiarFlechas(){
         flechasIngresadas = interfaz.cambiarDato("flechas");
+        puntajeMasAlto = Juez.reiniciarPuntajeMasAlto();
     }
     
-    
+    public static void setPuntaje(int puntaje,String nombre){
+        puntajeMasAlto = puntaje;
+        nombreDeHighScore = nombre;
+    }
 }
