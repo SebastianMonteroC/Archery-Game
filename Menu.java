@@ -1,24 +1,28 @@
 public class Menu {
-    private Partida partida;
-    public int setsIngresados;
-    public int flechasIngresadas;
+    private static Interfaz interfaz;
+    private static Partida partida;
+    public static int setsIngresados;
+    public static int flechasIngresadas;
+    
     
     public Menu(){
+        interfaz = new Interfaz();
         setsIngresados = 2;
         flechasIngresadas = 3;
     }
     
-    public void iniciarJuego(){
-        Partida partida = new Partida(setsIngresados, flechasIngresadas);
+    public static void iniciarJuego(){
+        partida = new Partida(setsIngresados, flechasIngresadas, interfaz);
         partida.jugar();
     }
     
-    public void cambiarSets(int sets){
-        setsIngresados = sets;
+    public static void cambiarSets(){
+        setsIngresados = interfaz.cambiarDato("sets");
     }
     
-    public void cambiarFlechas(int flechas){
-        flechasIngresadas = flechas;
+    public static void cambiarFlechas(){
+        flechasIngresadas = interfaz.cambiarDato("flechas");
     }
+    
     
 }

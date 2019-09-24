@@ -17,6 +17,10 @@ public class Jugador {
         this.esHumano = esHumano;
     }
     
+    public boolean getEsHumano(){
+        return esHumano;
+    }
+    
     public void setExperiencia(String experiencia){
         this.experiencia = experiencia;
     }
@@ -76,4 +80,5 @@ public class Jugador {
         double coordenadaConError = coordenada + falloAleatorio();
         return coordenadaConError;
     }
+    
 }

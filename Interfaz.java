@@ -3,7 +3,6 @@ import java.awt.event.*;
 import javax.swing.*;
     
 public class Interfaz extends JFrame{
-    
     private JButton empezar;
     private JButton cambiarSets;
     private JButton cambiarFlechas;
@@ -11,13 +10,13 @@ public class Interfaz extends JFrame{
     private JButton salir;
     private Menu menu;
     
+    
     public Interfaz() { //CONSTRUCTOR DE INTERFAZ DE MENU PRINCIPAL
         //Crea una instancia de la clase Menu para pasarle lo que el usuario haga y crea una ventana
-        menu = new Menu();
         JFrame ventana = new JFrame("Arqueria");
 
         
-        cargarImagen("pixil-frame-0.png", 500, 500);//Agrega una imagen a la ventana como fondo y ajusta su tamano, posicion y otras configuraciones
+        cargarImagen("pixelMenu.png", 500, 500);//Agrega una imagen a la ventana como fondo y ajusta su tamano, posicion y otras configuraciones
         
         pack();
         setVisible(true);
@@ -44,27 +43,52 @@ public class Interfaz extends JFrame{
         crearBotonSalir();
     }
     
-    public Interfaz(String mensaje){ ///CONSTRUCTOR DE INTERFAZ DE JUEGO
-        JFrame ventana = new JFrame(mensaje);
-        JTextField coordenadaX;
-        JTextField coordenadaY;
-        
-        cargarImagen("pixil-frame-0.png",600,400);
-        
-        pack();
-        setVisible(true);
-        setLayout(null);
-        setSize(600,400);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        coordenadaX = new JTextField("2");
-        coordenadaX.setPreferredSize(new Dimension(40,25));
-        coordenadaX.setEditable(true);
-        ventana.add(coordenadaX);
-        
+    //metodo que recibe las coordenadas para realizar el tiro
+    
+    public double[] ingresarCoordenadas(){
+        JTextField xField = new JTextField(5);
+        JTextField yField = new JTextField(5);
+          
+        double coordenadaX = 1.0;
+        double coordenadaY = 1.0;
+          
+        double[] coordenadas = new double[2];
+    
+        JPanel myPanel = new JPanel();
+        myPanel.add(new JLabel("X:"));
+        myPanel.add(xField);
+        myPanel.add(Box.createHorizontalStrut(15));
+        myPanel.add(new JLabel("Y:"));
+        myPanel.add(yField);
+    
+        int result = JOptionPane.showConfirmDialog(null, myPanel, "Ingrese las coordenadas de su tiro ", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            try{
+                coordenadaX = Double.parseDouble(xField.getText());
+                coordenadaY = Double.parseDouble(yField.getText());
+                mensaje("Coordenadas Recibidas: Realizando Tiro");
+            }
+            catch(Exception e){
+                mensaje("Coordenadas Invalidas: Realizando Tiro Aleatorio");
+                coordenadaX = Math.random();
+                coordenadaY = Math.random();
+            }  
+        }
+        if(result == JOptionPane.CANCEL_OPTION){
+            mensaje("Juego Terminado");
+        }
+      coordenadas[0] = coordenadaX;
+      coordenadas[1] = coordenadaY;
+      return coordenadas;
     }
+    
+    //crea un joptionpane con el mensaje ingresado
+    public void mensaje(String mensaje){
+        JOptionPane.showMessageDialog(null,mensaje,"Arqueria",1);
+    }
+    
     /* METODOS QUE CREAN BOTONES */
+     
     public void crearBotonSalir(){
         salir = new JButton("Salir");
         salir.setBounds(50,350,200,50);
@@ -76,26 +100,31 @@ public class Interfaz extends JFrame{
         });
     }
     
+    //Crea el boton para ver el puntaje mas altos
     public void crearBotonVerPuntaje(){
         verPuntaje = new JButton("Ver Puntajes");
         verPuntaje.setBounds(50,300,200,50);
         this.add(verPuntaje);
         verPuntaje.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent evt){
+                
             }
-        });
+        }); 
     }
     
+    //crea el boton para cambiar la cantidad de sets
     public void crearBotonCambiarFlechas(){
         cambiarFlechas = new JButton("Cambiar Flechas");
         cambiarFlechas.setBounds(50,250,200,50);
         this.add(cambiarFlechas);
         cambiarFlechas.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent evt){
-                pedirDato("FLECHAS");
+               Menu.cambiarFlechas();
             }
         });
     }
+    
+    //crea el boton para cambiar la cantidad de sets
     
     public void crearBotonCambiarSets(){
         cambiarSets = new JButton("Cambiar Sets");
@@ -104,11 +133,12 @@ public class Interfaz extends JFrame{
         cambiarSets.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent evt){
-                pedirDato("SETS");
+               Menu.cambiarSets();
             }
         });
     }
     
+    //crea el boton para iniciar el juego
     public void crearBotonIniciarJuego(){
         empezar = new JButton("Iniciar Partida");
         empezar.setBounds(50,150,200,50);
@@ -116,50 +146,33 @@ public class Interfaz extends JFrame{
         empezar.addActionListener(new ActionListener(){
             @Override 
             public void actionPerformed(ActionEvent evt){
-                menu.iniciarJuego();
+                Menu.iniciarJuego();
             }
-        });
+        }); 
     }
     
-    public void pedirDato(String mensaje){
-        JTextField cantidad;
-        JButton botonOk;
-        JFrame ventana = new JFrame(mensaje);
-        
-        ventana.setVisible(true);
-        ventana.setSize(250,100);
-        ventana.setResizable(false);
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        cantidad = new JTextField("2");
-        cantidad.setPreferredSize(new Dimension(40,25));
-        cantidad.setEditable(true);
-        ventana.add(cantidad);
-        
-        botonOk = new JButton("OK");
-        ventana.add(botonOk);
-        ventana.setLayout(new FlowLayout());
-        botonOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                String setsString = cantidad.getText();
-                int numeroEnEntero = 2;
-                if(esEntero(setsString)){
-                    numeroEnEntero = Integer.parseInt(cantidad.getText());
-                }
-                switch(mensaje){
-                    case "SETS":
-                    menu.cambiarSets(numeroEnEntero);
-                    break;
-                    case "FLECHAS":
-                    menu.cambiarFlechas(numeroEnEntero);
-                    break;
-                }
-                ventana.dispose();
-            }
-        });
-    }
+    //Metodo que cambia la cantidad de flechas o sets dependiendo del mensaje que se ingresa
     
+    public int cambiarDato(String mensaje){
+          JTextField xField = new JTextField(5);
+          
+          int valorIngresado = 1;
+    
+          JPanel myPanel = new JPanel();
+          myPanel.add(new JLabel(mensaje));
+          myPanel.add(xField);
+          myPanel.add(Box.createHorizontalStrut(15));
+    
+          int result = JOptionPane.showConfirmDialog(null, myPanel, "Ingrese la cantidad de " + mensaje + ": ", JOptionPane.OK_CANCEL_OPTION);
+          if (result == JOptionPane.OK_OPTION) {
+              if(esEntero(xField.getText())){
+                  valorIngresado = Integer.parseInt(xField.getText());
+              }
+         }
+            return valorIngresado;
+      }
+    
+    // verifica si un String es entero
     public boolean esEntero(String datoIngresado){
         int numeroPrueba = 0;
         boolean esEntero;
@@ -173,6 +186,8 @@ public class Interfaz extends JFrame{
         return esEntero;
     }
     
+    //Cargar la imagen del menu
+    
     public void cargarImagen(String path, int sizeX, int sizeY){
         Image img = Toolkit.getDefaultToolkit().getImage(path);
         Image newImg = img.getScaledInstance(sizeX, sizeY, Image.SCALE_DEFAULT);
@@ -183,5 +198,6 @@ public class Interfaz extends JFrame{
                 g.drawImage(newImg, 1, 1, null);
             }
         });
-    }
+        }
+        
 }
