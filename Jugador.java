@@ -4,6 +4,8 @@ public class Jugador {
     public double rangoDeErrorMinimo;
     public double rangoDeErrorMaximo;
     public boolean esHumano;
+    private int puntaje;
+    private int setsGanados;
     java.util.Random random = new java.util.Random();
 
     
@@ -11,14 +13,12 @@ public class Jugador {
         setExperiencia(randomNivel());
         generarRango();
         setEsHumano(esHumano);
+        puntaje = 0;
+        setsGanados = 0;
     }
     
     public void setEsHumano(boolean esHumano){
         this.esHumano = esHumano;
-    }
-    
-    public boolean getEsHumano(){
-        return esHumano;
     }
     
     public void setExperiencia(String experiencia){
@@ -32,6 +32,14 @@ public class Jugador {
     public void setRangoDeErrorMaximo(double rangoDeErrorMaximo){
         this.rangoDeErrorMaximo = rangoDeErrorMaximo;
     }
+
+    public void setPuntaje(int puntaje){
+        this.puntaje = puntaje;
+    }
+
+    public void setSetsGanados(int setsGanados){
+        this.setsGanados = setsGanados;
+    }
     
     public String getExperiencia(){
         return experiencia;
@@ -44,6 +52,19 @@ public class Jugador {
     public double getRangoDeErrorMaximo(){
         return rangoDeErrorMaximo;
     }
+
+    public int getPuntaje(){
+        return puntaje;
+    }
+    
+    public int getSetsGanados(){
+        return setsGanados;
+    }
+    
+    public void agregarPuntaje(int puntaje){
+        this.puntaje += puntaje;
+    }
+
     
     public String randomNivel(){
         String[] nivelesDisponibles = {"Novato","Intermedio","Profesional"};
@@ -80,5 +101,4 @@ public class Jugador {
         double coordenadaConError = coordenada + falloAleatorio();
         return coordenadaConError;
     }
-    
 }
