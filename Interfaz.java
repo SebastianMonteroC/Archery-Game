@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.Scanner;
     
 public class Interfaz extends JFrame{
     private JButton empezar;
@@ -10,52 +11,129 @@ public class Interfaz extends JFrame{
     private JButton salir;
     private Menu menu;
     private Partida partida;
+    private boolean terminal;
+    private Scanner entrada;
     
     
-    public Interfaz(Menu menu) { //CONSTRUCTOR DE INTERFAZ DE MENU PRINCIPAL
+    public Interfaz(Menu menu, boolean terminal) { //CONSTRUCTOR DE INTERFAZ DE MENU PRINCIPAL
         //Crea una instancia de la clase Menu para pasarle lo que el usuario haga y crea una ventana
-        JFrame ventana = new JFrame("Arqueria");
-        
+        this.terminal = terminal;
         this.menu = menu;
-        
-        cargarImagen("pixelMenu.png", 500, 500);//Agrega una imagen a la ventana como fondo y ajusta su tamano, posicion y otras configuraciones
-        
-        pack();
-        setVisible(true);
-        setLayout(null);
-        setSize(500,500);
-        setResizable(false);
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        if(terminal == false){
+            JFrame ventana = new JFrame("Arqueria");
 
-        //BOTONES
+            cargarImagen("pixelMenu.png", 500, 500);//Agrega una imagen a la ventana como fondo y ajusta su tamano, posicion y otras configuraciones
+            
+            pack();
+            setVisible(true);
+            setLayout(null);
+            setSize(500,500);
+            setResizable(false);
+            ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            //BOTONES
         
-        //Boton de iniciar juego
-        crearBotonIniciarJuego();
+            //Boton de iniciar juego
+            crearBotonIniciarJuego();
         
-        //Boton de cambiar el numero de sets
-        crearBotonCambiarSets();
+            //Boton de cambiar el numero de sets
+            crearBotonCambiarSets();
         
-        //Boton de cambiar el numero de flechas
-        crearBotonCambiarFlechas();
+            //Boton de cambiar el numero de flechas
+            crearBotonCambiarFlechas();
         
-        //Boton para ver el puntaje mayor
-        crearBotonVerPuntaje();
+            //Boton para ver el puntaje mayor
+            crearBotonVerPuntaje();
         
-        //Boton de salir
-        crearBotonSalir();
+            //Boton de salir
+            crearBotonSalir();
+        }
+
     }
     
     //metodo que recibe las coordenadas para realizar el tiro
+    public void menuTerminal(){
+        entrada = new Scanner(System.in);
+        String opcion;
+        while(true){
+            System.out.println("Arqueria: \n1.Iniciar Juego \n2.Cambiar Sets\n3.Cambiar flechas\n4.Ver puntaje\n5.Salir\nEscoja una opcion: ");
+            opcion = entrada.next();
+            verificarOpcion(opcion);
+        }
+    }
+    public void verificarOpcion(String opcion){
+        String input;
+        int inputEntero = 2;
+        switch(opcion){
+            case "1":
+                menu.iniciarJuego();
+            break;
+            case "2":
+                System.out.println("Ingrese la nueva cantidad de sets: ");
+                input = entrada.next();
+                if(esEntero(input)){
+                    inputEntero = Integer.parseInt(input);
+                }
+                menu.cambiarFlechas(inputEntero);
+                
+            break;
+            case "3":
+                System.out.println("Ingrese la nueva cantidad de flechas: ");
+                input = entrada.next();
+                if(esEntero(input)){
+                    inputEntero = Integer.parseInt(input);
+                }
+                menu.cambiarSets(inputEntero);
+            break;
+            
+            case "4":
+                System.out.println("Puntaje mas alto: " + menu.highScore);
+            break;
+            
+            case "5":
+                System.exit(0);
+            break;
+        }
+    }
     
-    public double[] ingresarCoordenadas(){
-        JTextField xField = new JTextField(5);
-        JTextField yField = new JTextField(5);
-          
+    
+    public double[] ingresarCoordenadas(){      
+        double[] coordenadas = new double[2];
+        if(terminal){
+            coordenadas = ingresarCoordenadasTerminal(coordenadas);
+        }
+        else{
+            coordenadas = ingresarCoordenadasInterfaz(coordenadas);
+        }
+        return coordenadas;
+    }
+    
+    public double[] ingresarCoordenadasTerminal(double[] coordenadas){
         double coordenadaX = 1.0;
         double coordenadaY = 1.0;
-          
-        double[] coordenadas = new double[2];
+        try{
+            System.out.println("Ingrese coordenada X: ");
+            coordenadaX = Double.parseDouble(entrada.nextLine());
+            
+            System.out.println("Ingrese coordenada Y: ");
+            coordenadaY = Double.parseDouble(entrada.nextLine());
+        }
+        catch(Exception E){
+            mensaje("Coordenadas Invalidas: Realizando Tiro Aleatorio");
+            coordenadaX = Math.random();
+            coordenadaY = Math.random();
+        }
+        coordenadas[0] = coordenadaX;
+        coordenadas[1] = coordenadaY;
+        return coordenadas;
+    }
     
+    public double[] ingresarCoordenadasInterfaz(double[] coordenadas){
+        double coordenadaX = 1.0;
+        double coordenadaY = 1.0;
+        JTextField xField = new JTextField(5);
+        JTextField yField = new JTextField(5);
+
         JPanel myPanel = new JPanel();
         myPanel.add(new JLabel("X:"));
         myPanel.add(xField);
@@ -78,31 +156,45 @@ public class Interfaz extends JFrame{
         }
         if(result == JOptionPane.CANCEL_OPTION){
             mensaje("Juego Terminado");
+            partida.cantidadDeSets = 0;
+            partida.cantidadDeFlechas = 0;
+            
         }
         coordenadas[0] = coordenadaX;
         coordenadas[1] = coordenadaY;
+       
         return coordenadas;
     }
-    
+
     public String ingresarNombre(){
-        JTextField nombreField = new JTextField(6);
         String nombreDeUsuario = "";
-        JPanel myPanel = new JPanel();
-        myPanel.add(new JLabel("Ingrese su nombre: "));
-        myPanel.add(nombreField);
-        myPanel.add(Box.createHorizontalStrut(15));
-        int result = JOptionPane.showConfirmDialog(null, myPanel, "HIGH SCORE", JOptionPane.OK_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            mensaje("HIGH SCORE GUARDADO CON EXITO!");
-            nombreDeUsuario = nombreField.getText();
+        if(terminal){
+            System.out.println("HIGH SCORE! Ingrese su nombre: ");
+            nombreDeUsuario = entrada.next();
+        }
+        else{
+            JTextField nombreField = new JTextField(6);
+            JPanel myPanel = new JPanel();
+            myPanel.add(new JLabel("Ingrese su nombre: "));
+            myPanel.add(nombreField);
+            myPanel.add(Box.createHorizontalStrut(15));
+            int result = JOptionPane.showConfirmDialog(null, myPanel, "HIGH SCORE", JOptionPane.OK_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                mensaje("HIGH SCORE GUARDADO CON EXITO!");
+                nombreDeUsuario = nombreField.getText();
+            }
         }
         return nombreDeUsuario;
     }
-    //crea un joptionpane con el mensaje ingresado
+    //crea un joptionpane o lo imprime con el mensaje ingresado
     public void mensaje(String mensaje){
-        JOptionPane.showMessageDialog(null,mensaje,"Arqueria",1);
+        if(terminal){
+            System.out.println(mensaje);
+        }
+        else{
+            JOptionPane.showMessageDialog(null,mensaje,"Arqueria",1);  
+        }
     }
-    
     /* METODOS QUE CREAN BOTONES */
      
     public void crearBotonSalir(){
@@ -207,6 +299,9 @@ public class Interfaz extends JFrame{
         return esEntero;
     }
     
+    public boolean getTerminal(){
+        return terminal;
+    }
     //Cargar la imagen del menu
     
     public void cargarImagen(String path, int sizeX, int sizeY){

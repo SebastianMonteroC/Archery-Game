@@ -7,8 +7,8 @@ public class Partida {
     private Blanco blanco;
     private Interfaz interfaz;
     private Partida partida;
-    private int cantidadDeSets;
-    private int cantidadDeFlechas;
+    public int cantidadDeSets;
+    public int cantidadDeFlechas;
    
     
     Random random = new Random();

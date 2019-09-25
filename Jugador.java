@@ -126,7 +126,6 @@ public class Jugador {
     public double estrategia1(){
         double coordenada = 1;
         coordenada += Math.random()*0.50;
-        System.out.println(coordenada);
-        return 1.0;
+        return coordenada;
     }
 }
