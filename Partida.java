@@ -6,8 +6,10 @@ public class Partida {
     private Juez juez;
     private Blanco blanco;
     private Interfaz interfaz;
+    private Partida partida;
     private int cantidadDeSets;
     private int cantidadDeFlechas;
+   
     
     Random random = new Random();
     
@@ -57,10 +59,12 @@ public class Partida {
         //se registra quien gano la partida en la clase Juez
     }
     
-    public void verificarHighScore(){
-        if(jugador1.getPuntaje() > juez.getPuntajeMasAlto()){
-            juez.setPuntajeMasAlto(jugador1.getPuntaje(),interfaz.ingresarNombre());
+    public String verificarHighScore(){
+        String puntajeMasAlto = "" + juez.getPuntajeMasAlto();
+        if(jugador1.getPuntaje() > juez.getValorDePuntajeMasAlto()){
+            puntajeMasAlto = juez.verificarPuntaje(jugador1.getPuntaje(),interfaz.ingresarNombre());
         }
+        return juez.getPuntajeMasAlto();
     }
     
     public void desempate(){
@@ -100,8 +104,8 @@ public class Partida {
             interfaz.mensaje("Jugador 1\nCoordenada X: " + coordenadaX + "- CoordenadaY: " + coordenadaY + "\n Gana " + puntaje + " puntos por el tiro");
         }
         else{
-            coordenadaX = jugador.tiro(1);
-            coordenadaY = jugador.tiro(1);
+            coordenadaX = jugador.tiroAutomatico();
+            coordenadaY = jugador.tiroAutomatico();
             
             coordenadaX = set.aplicarVientoDelSet(coordenadaX,true);
             coordenadaY = set.aplicarVientoDelSet(coordenadaY,false);

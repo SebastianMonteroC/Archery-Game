@@ -1,11 +1,13 @@
 import java.util.Random;
 public class Jugador {
-    public String experiencia;
-    public double rangoDeErrorMinimo;
-    public double rangoDeErrorMaximo;
-    public boolean esHumano;
+    private String experiencia;
+    private double rangoDeErrorMinimo;
+    private double rangoDeErrorMaximo;
+    private boolean esHumano;
     private int puntaje;
     private int setsGanados;
+    private int estrategia;
+    private double tiroAnterior;
     java.util.Random random = new java.util.Random();
 
     
@@ -15,6 +17,8 @@ public class Jugador {
         setEsHumano(esHumano);
         puntaje = 0;
         setsGanados = 0;
+        estrategia = generarEstrategiaAleatoria();
+        tiroAnterior = 1;
     }
     
     public void setEsHumano(boolean esHumano){
@@ -60,6 +64,7 @@ public class Jugador {
     public void agregarPuntaje(int puntaje){
         this.puntaje += puntaje;
     }
+    
     public String randomNivel(){
         String[] nivelesDisponibles = {"Novato","Intermedio","Profesional"};
         int nivelAleatorio = random.nextInt(nivelesDisponibles.length);
@@ -96,4 +101,32 @@ public class Jugador {
         return coordenadaConError;
     }
     
+    public int generarEstrategiaAleatoria(){
+        int estrategia = (int)((Math.random()*3)+1);
+        return estrategia;
+    }
+    
+    public double tiroAutomatico(){
+        double tiro = 1;
+        switch(estrategia){
+            case 1:
+                tiro = estrategia1() + falloAleatorio();
+            break;
+            case 2:
+                
+            break;
+            case 3:
+            
+            break;
+        }
+        tiroAnterior = tiro;
+        return tiro;
+    }
+    
+    public double estrategia1(){
+        double coordenada = 1;
+        coordenada += Math.random()*0.50;
+        System.out.println(coordenada);
+        return 1.0;
+    }
 }

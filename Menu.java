@@ -1,35 +1,43 @@
 public class Menu {
-    private static Interfaz interfaz;
     private static Partida partida;
-    public static int setsIngresados;
-    public static int flechasIngresadas;
-    public static int puntajeMasAlto;
-    public static String nombreDeHighScore;
-    
+    private Interfaz interfaz;
+    public int setsIngresados;
+    public int flechasIngresadas;
+    public String highScore;
     
     public Menu(){
-        interfaz = new Interfaz();
         setsIngresados = 2;
         flechasIngresadas = 3;
+        highScore = "nadie. No se ha jugado";
     }
     
-    public static void iniciarJuego(){
+    public void setInterfaz(Interfaz interfaz){
+        this.interfaz = interfaz;
+    }
+    
+    public int getSets(){
+        return setsIngresados;
+    }
+    
+    public int getFlechas(){
+        return flechasIngresadas;
+    }
+    
+    public void iniciarJuego(){
         partida = new Partida(setsIngresados, flechasIngresadas, interfaz);
         partida.jugar();
+        highScore = partida.verificarHighScore();
     }
     
-    public static void cambiarSets(){
-        setsIngresados = interfaz.cambiarDato("sets");
-        puntajeMasAlto = Juez.reiniciarPuntajeMasAlto();
+    public void cambiarSets(int setsIngresados){
+        this.setsIngresados = setsIngresados;
+        highScore = "nadie. No se ha jugado.";
     }
     
-    public static void cambiarFlechas(){
-        flechasIngresadas = interfaz.cambiarDato("flechas");
-        puntajeMasAlto = Juez.reiniciarPuntajeMasAlto();
+    public void cambiarFlechas(int flechasIngresadas){
+        this.flechasIngresadas = flechasIngresadas;
+        highScore = "nadie. No se ha jugado.";
     }
     
-    public static void setPuntaje(int puntaje,String nombre){
-        puntajeMasAlto = puntaje;
-        nombreDeHighScore = nombre;
-    }
+
 }

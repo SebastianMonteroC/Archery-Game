@@ -9,12 +9,14 @@ public class Interfaz extends JFrame{
     private JButton verPuntaje;
     private JButton salir;
     private Menu menu;
+    private Partida partida;
     
     
-    public Interfaz() { //CONSTRUCTOR DE INTERFAZ DE MENU PRINCIPAL
+    public Interfaz(Menu menu) { //CONSTRUCTOR DE INTERFAZ DE MENU PRINCIPAL
         //Crea una instancia de la clase Menu para pasarle lo que el usuario haga y crea una ventana
         JFrame ventana = new JFrame("Arqueria");
-
+        
+        this.menu = menu;
         
         cargarImagen("pixelMenu.png", 500, 500);//Agrega una imagen a la ventana como fondo y ajusta su tamano, posicion y otras configuraciones
         
@@ -77,9 +79,9 @@ public class Interfaz extends JFrame{
         if(result == JOptionPane.CANCEL_OPTION){
             mensaje("Juego Terminado");
         }
-      coordenadas[0] = coordenadaX;
-      coordenadas[1] = coordenadaY;
-      return coordenadas;
+        coordenadas[0] = coordenadaX;
+        coordenadas[1] = coordenadaY;
+        return coordenadas;
     }
     
     public String ingresarNombre(){
@@ -121,7 +123,7 @@ public class Interfaz extends JFrame{
         this.add(verPuntaje);
         verPuntaje.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent evt){
-                mensaje("Puntaje mas alto es: " + Menu.puntajeMasAlto + " hecho por " + Menu.nombreDeHighScore);
+                mensaje("Puntaje mas alto es: " + menu.highScore);
             }
         }); 
     }
@@ -133,7 +135,9 @@ public class Interfaz extends JFrame{
         this.add(cambiarFlechas);
         cambiarFlechas.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent evt){
-               Menu.cambiarFlechas();
+               int flechasIngresadas = cambiarDato("flechas");
+               
+               menu.cambiarFlechas(flechasIngresadas);
             }
         });
     }
@@ -147,7 +151,9 @@ public class Interfaz extends JFrame{
         cambiarSets.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent evt){
-               Menu.cambiarSets();
+               int setsIngresados = cambiarDato("sets");
+
+               menu.cambiarSets(setsIngresados);
             }
         });
     }
@@ -160,7 +166,8 @@ public class Interfaz extends JFrame{
         empezar.addActionListener(new ActionListener(){
             @Override 
             public void actionPerformed(ActionEvent evt){
-                Menu.iniciarJuego();
+                menu.iniciarJuego();
+                
             }
         }); 
     }

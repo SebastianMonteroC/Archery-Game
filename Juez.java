@@ -13,7 +13,8 @@ public class Juez{
     private int puntajeDePartidaJ2 = 0;
     private int setsGanadosJ1 = 0;
     private int setsGanadosJ2 = 0;
-    private static int puntajeMasAlto;
+    private int puntajeMasAlto;
+    private String puntajeMasAltoConNombre;
     
 
     public Juez(Blanco blanco, Jugador jugador1, Jugador jugador2, Set set){
@@ -30,8 +31,9 @@ public class Juez{
         puntajePorSetJ2 = 0;
     }
     
-    public static int reiniciarPuntajeMasAlto(){
+    public int reiniciarPuntajeMasAlto(){
         puntajeMasAlto = 0;
+        puntajeMasAltoConNombre = "nadie. No se ha jugado";
         return puntajeMasAlto;
     }
 
@@ -47,17 +49,19 @@ public class Juez{
         jugador2.agregarPuntaje(puntaje);
     }
     
-    public int getPuntajeMasAlto(){
+    public int getValorDePuntajeMasAlto(){
         return puntajeMasAlto;
     }
+    public String getPuntajeMasAlto(){
+        return puntajeMasAltoConNombre;
+    }
 
-    public void setPuntajeMasAlto(int puntaje,String nombre){
+    public String verificarPuntaje(int puntaje,String nombre){
         if(puntaje > puntajeMasAlto){
             puntajeMasAlto = puntaje;
+            puntajeMasAltoConNombre = nombre + " con " + puntaje + " puntos.";
         }
-        
-        Menu.setPuntaje(puntajeMasAlto,nombre);
-        
+        return puntajeMasAltoConNombre;
     }
     
     public String definirGanadorDeSet(){
