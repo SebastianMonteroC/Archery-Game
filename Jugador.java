@@ -128,4 +128,21 @@ public class Jugador {
         coordenada += Math.random()*0.50;
         return coordenada;
     }
+    
+    public double estrategia3(){
+        double coordenada = 1.0;
+        double coordenadaAleatoria = (int) Math.random(3)+1;
+        switch(coordenadaAleatoria){
+            case 1:
+                coordenada = 1.0;
+            break;
+            case 2:
+                coordenada = 0.5;
+            break; 
+            case 3:
+                coordenada = -0.5;
+            break; 
+        }
+        return coordenada;
+    }
 }
