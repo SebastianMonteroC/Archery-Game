@@ -116,7 +116,7 @@ public class Jugador {
                 
             break;
             case 3:
-            
+                tiro = estrategia3() + falloAleatorio();
             break;
         }
         tiroAnterior = tiro;
